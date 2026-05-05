@@ -1,0 +1,42 @@
+CC = gcc
+CFLAGS = -Wall -g
+RM = rm -f
+
+TARGET = HormuzTankers.exe
+BUILD_DIR = build
+
+OBJS = $(BUILD_DIR)/main.o \
+       $(BUILD_DIR)/count_mark.o \
+       $(BUILD_DIR)/pic_preprocessing.o \
+       $(BUILD_DIR)/png_interaction.o \
+       $(BUILD_DIR)/rgba_grayscale.o \
+       $(BUILD_DIR)/lodepng.o
+
+all: $(BUILD_DIR) $(TARGET)
+
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
+
+$(TARGET): $(OBJS)
+	$(CC) $(OBJS) $(CFLAGS) -o $(TARGET)
+
+$(BUILD_DIR)/main.o: main.c functions.h lodepng.h | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c main.c -o $(BUILD_DIR)/main.o
+
+$(BUILD_DIR)/count_mark.o: count_mark.c functions.h | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c count_mark.c -o $(BUILD_DIR)/count_mark.o
+
+$(BUILD_DIR)/pic_preprocessing.o: pic_preprocessing.c functions.h | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c pic_preprocessing.c -o $(BUILD_DIR)/pic_preprocessing.o
+
+$(BUILD_DIR)/png_interaction.o: png_interaction.c functions.h lodepng.h | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c png_interaction.c -o $(BUILD_DIR)/png_interaction.o
+
+$(BUILD_DIR)/rgba_grayscale.o: rgba_grayscale.c functions.h | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c rgba_grayscale.c -o $(BUILD_DIR)/rgba_grayscale.o
+
+$(BUILD_DIR)/lodepng.o: lodepng.c lodepng.h | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c lodepng.c -o $(BUILD_DIR)/lodepng.o
+
+clean:
+	$(RM) -r $(BUILD_DIR) $(TARGET)
