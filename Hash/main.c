@@ -8,27 +8,35 @@ int m; // размер хэш-таблицы
 double a = 3.0;
 
 
+// ___________________________________ХЭШ-ФУНКЦИИ__________________________________________
 int hash_substract(int value) {
     return value % m;
 }
 
-int hash_multiply(int value) {
-    int w = 32; // 32 бит
-    double A = (pow(5, 0.5) - 1)/2; // 0,6180339887
-
-    return (int)(m*(value*A - (int)(value*A)));
-} 
-
-int hash_xor(int value) {
-    value ^= (value >> 16);
-    value ^= (value << 10);
-    value ^= (value >> 5);
-    return value % m;
+int hash_bad(int value) {
+    return value % 10;
 }
 
-int hash_knuth(int value) {
-    return (value * 2654435761u) % m;
-}
+// остальные хэш-функции
+/*
+    int hash_multiply(int value) {
+        int w = 32; // 32 бит
+        double A = (pow(5, 0.5) - 1)/2; // 0,6180339887
+
+        return (int)(m*(value*A - (int)(value*A)));
+    } 
+
+    int hash_xor(int value) {
+        value ^= (value >> 16);
+        value ^= (value << 10);
+        value ^= (value >> 5);
+        return value % m;
+    }
+
+    int hash_knuth(int value) {
+        return (value * 2654435761u) % m;
+    }
+*/
 
 
 
@@ -163,7 +171,7 @@ void chained_hash_delete(List** HTable, int (*hash)(int), int value) {
 }
 
 
-// поиск простого числа m для заданого n и a
+// Поиск простого числа m для размера хэш-таблицы
 int is_prime(int x) {
     if (x < 2) return 0;
     for (int i = 2; i * i <= x; i++)
@@ -185,186 +193,6 @@ typedef struct {
     double insert, search, del_success, del_fail;
 } Metrics;
 
-Metrics test_chained_hash(int (*hash)(int), int n) {
-    // будем считать что коэфф заполнения a = n/m.
-    // как вариант можно добавить разные a от 0.5 до 5 
-
-    int reps=10000; // так как время операций все равно очень быстрое раздуем количество тестов
-
-    List** HTable = malloc(m*sizeof(List*));
-    for (int i=0; i<m; i++) 
-        HTable[i] = create_list();
-
-    // получаем n рандомных значений от 0 до n
-    int* test_values = malloc(n*sizeof(int));
-    for(int i=0; i<n; i++)
-        test_values[i] = (double) rand()/RAND_MAX * n;
-
-    // INSERT
-    double insert_time = 0;
-    clock_t start, end;
-    for (int r=0; r<reps; r++) {
-
-        start = clock();
-        for (int i = 0; i < n; i++)
-            chained_hash_insert(HTable, hash, test_values[i]);
-        end = clock();
-
-        insert_time += (double)(end - start) / CLOCKS_PER_SEC;
-        for (int i=0; i<m; i++) 
-            clear_list(HTable[i]);
-    }
-    
-    insert_time /= (n*reps);
-
-    // SEARCH
-    for (int i = 0; i < n; i++)
-        chained_hash_insert(HTable, hash, test_values[i]);
-
-    // создаем массив рандомных значений, которые будем искать в таблице
-    int k = n / 2;
-    int* to_search = malloc(k * sizeof(int));
-    for (int i = 0; i < k; i++)
-        to_search[i] = rand() % (10 * n);
-
-    start = clock();
-    for (int r = 0; r < reps; r++)
-        for (int i = 0; i < k; i++)
-            chained_hash_find(HTable, hash, to_search[i]);
-    end = clock();
-
-    double search_time =
-    (double)(end - start) / CLOCKS_PER_SEC / (reps * k);
-
-    for (int i=0; i<m; i++) 
-        clear_list(HTable[i]);
-
-    
-    // DELETE только успешные
-    int* successful_delete = test_values; 
-    double delete_success_time=0;
-
-    for (int r=0; r<reps; r++) {
-        for (int i = 0; i < n; i++)
-        chained_hash_insert(HTable, hash, test_values[i]);
-        
-        start = clock();
-        for (int i=0; i<k; i++) {
-            chained_hash_delete(HTable, hash, successful_delete[i]);
-        }
-        end = clock();
-        
-        delete_success_time += (double) (end-start) / CLOCKS_PER_SEC;
-
-        for (int i=0; i<m; i++) 
-            clear_list(HTable[i]);
-    }
-    
-    delete_success_time /= (reps*k);
-   
-    // DELETE только неуспешные
-    int *unsuccessful_delete = malloc(k*sizeof(int));
-    for (int i=0; i<k; i++) 
-        unsuccessful_delete[i] = (double) rand()/RAND_MAX * n + 2*n;
-    double delete_unsuccess_time = 0;
-    for (int r=0; r<reps; r++) {
-        for (int i = 0; i < n; i++)
-        chained_hash_insert(HTable, hash, test_values[i]);
-        
-        start = clock();
-        for (int i=0; i<k; i++) {
-            chained_hash_delete(HTable, hash, unsuccessful_delete[i]);
-        }
-        end = clock();
-        
-        delete_unsuccess_time += (double) (end-start) / CLOCKS_PER_SEC;
-
-        for (int i=0; i<m; i++) 
-            clear_list(HTable[i]);
-    }
-    
-    delete_unsuccess_time /= (reps*k);
-    
-
-    for (int i=0; i<m; i++) {
-        clear_list(HTable[i]);
-        free(HTable[i]);
-    }
-    free(HTable);
-    free(unsuccessful_delete);
-    //free(successful_delete);
-    successful_delete = NULL;
-    free(to_search);
-    free(test_values);
-
-    
-    return (Metrics){insert_time, search_time, delete_success_time, delete_unsuccess_time};
-}
-
-void chained_test_series (
-    Metrics (*test_func) (int (*hash)(int), int), 
-    int (*hash)(int), 
-    const char *test_func_name, 
-    const char *hash_name
-) {
-    FILE *RESULTS;
-    RESULTS = fopen("results.txt", "a");
-    if (RESULTS) {
-        fprintf(RESULTS, 
-            "Метод разрешения коллизий %s. Хэш-функция %s\n", 
-            test_func_name, 
-            hash_name);
-        fclose(RESULTS);
-    }
-
-    int tests = 10; // количествов тестов
-    
-    for (int n=100; n<=10000; n*=2) {
-        m = choose_m(n, a);
-
-        RESULTS = fopen("results.txt", "a");
-            if (RESULTS) {
-                fprintf(RESULTS, "Количество элементов в таблице n = %d. ", n);
-                fprintf(RESULTS, "Значения m = %d и a = %lf.\n", m, a);
-                fprintf(RESULTS, "Для поиска и удаления используем k = n/2 = %d прозвольных значений.\n", n/2);
-                fclose(RESULTS);
-            } 
-
-        Metrics sum = {0, 0, 0, 0};
-        for (int t=0; t<tests; t++) {
-            Metrics metr = test_func(hash, n);
-
-            sum.insert += metr.insert;
-            sum.search += metr.search;
-            sum.del_success += metr.del_success;
-            sum.del_fail += metr.del_fail;
-        }
-
-        Metrics avg = {
-            sum.insert / tests *1e9, 
-            sum.search / tests *1e9, 
-            sum.del_success / tests *1e9, 
-            sum.del_fail / tests *1e9};
-        
-        // сделаем файлик и туда будем запиывать результаты для каждого n
-        RESULTS = fopen("results.txt", "a");
-        if (RESULTS) {
-            fprintf(RESULTS,
-                    "Среднее время вставки = %.2lf ns, поиска = %.2lf ns, успешного удаления = %.2lf ns, неудачного удаления = %.2lf ns.\n\n", 
-                    avg.insert, avg.search, avg.del_success, avg.del_fail);
-            fclose(RESULTS);
-        } //  else return 1; чето вернуть если файлик не открылся
-    }
-
-    RESULTS = fopen("results.txt", "a");
-        if (RESULTS) {
-            fprintf(RESULTS,
-                "..............................Конец теста..................................................... \n\n");
-            fclose(RESULTS);
-        } //  else return 1; чето вернуть если файлик не открылся
-}
-
-
 
 
 // ________________________________Открытая адресация_________________________________________              
@@ -379,10 +207,6 @@ typedef struct OAElem {
     int flag; // DELETED = -1, NULL = 0, 
 } OAElem;
 
-
-// int hash_lin_probe(int (*hash)(int), int value, int i) {
-//     return (hash(value) + i) % m;
-// } // если с ней делать, то доп параметры везде пихать надо
 
 void lin_probe_insert(OAElem* HTable, int (*hash)(int), int value) {
     int i=0; 
@@ -469,15 +293,15 @@ void quad_probe_delete(OAElem* HTable, int (*hash)(int), int value) {
         HTable[j].flag = DELETED;
 }
 
-// void print_table(OAElem* HTable) {
-//     printf("\nTABLE:\n");
-//     for (int i = 0; i < m; i++) {
-//         printf("[%d]: ", i);
-//         if (HTable[i].flag == EMPTY) printf("EMPTY\n");
-//         else if (HTable[i].flag == DELETED) printf("DELETED\n");
-//         else printf("%d\n", HTable[i].value);
-//     }
-// }
+void print_table(OAElem* HTable) {
+    printf("\nTABLE:\n");
+    for (int i = 0; i < m; i++) {
+        printf("[%d]: ", i);
+        if (HTable[i].flag == EMPTY) printf("EMPTY\n");
+        else if (HTable[i].flag == DELETED) printf("DELETED\n");
+        else printf("%d\n", HTable[i].value);
+    }
+}
 
 void reset_table(OAElem* HTable) {
     for (int i = 0; i < m; i++) {
@@ -487,358 +311,231 @@ void reset_table(OAElem* HTable) {
 }
 
 
-Metrics test_lin_probe(int (*hash)(int), int n) {
-    int reps = 10000;
 
-    OAElem* HTable = malloc(m * sizeof(OAElem));
-    reset_table(HTable);
+// ____________________________________________________ТЕСТЫ_________________________________________________________
 
-    int* test_values = malloc(n * sizeof(int));
-    for(int i=0; i<n; i++)
-        test_values[i] = (double) rand()/RAND_MAX * n;
+enum Operation {
+    INSERT = 0, SEARCH = 1, SDELETE = 2, FDELETE = 3
+};
 
-    int k = n / 2;
+void uni_ch_test_series(int (*hash)(int), const char *hash_name) {
+    int ops = 100000;
+
+    int tests = 50;
+
+    for (int n = 100; n < 55000; n*=2) {
+        m = choose_m(n, a); // a = 3.0
+        printf("INPUT:\t n = %d, m = %d, a = %.2lf\n", n, m, a);
+
+        List** HTable = malloc(m*sizeof(List*));
+        for (int i=0; i<m; i++) 
+            HTable[i] = create_list();
+    
+        int i_cnt = 0, s_cnt = 0, sd_cnt = 0, fd_cnt = 0;
 
 
-    // INSERT
-    double insert_time = 0;
-    clock_t start, end;
+        double acc_time = 0.0;
+        for (int t=0; t<tests; t++) {
 
-    for (int r=0; r<reps; r++) {
-        start = clock();
-        for (int i=0; i<n; i++) 
-            lin_probe_insert(HTable, hash, test_values[i]);
-        end = clock();
-
-        insert_time += (double)(end - start) / CLOCKS_PER_SEC;
+            clock_t start, end;
+            start = clock();
+            for (int i=0; i< ops; i++) {
+                int value  = (double) rand()/RAND_MAX * n;
+    
+                int op = rand() % 4;
         
-        reset_table(HTable);
-    }
-
-    insert_time /= (reps*n);
-
-
-    // SEARCH
-    for (int i=0; i<n; i++) 
-            lin_probe_insert(HTable, hash, test_values[i]);
-
-    int* to_search = malloc(k*sizeof(int));
-    for(int i=0; i<k; i++)
-        to_search[i] = (double) rand()/RAND_MAX * n;
-
-    double search_time = 0;
-    start = clock();
-    for (int r=0; r<reps; r++) {
-        for (int i=0; i<k; i++)
-            lin_probe_search(HTable, hash, to_search[i]);
-    }
-    end = clock();
-
-    search_time = (double)(end - start) / CLOCKS_PER_SEC / (reps * k);
-
-    reset_table(HTable);
-
-
-    // DELETE успешные
-    double del_success_time = 0;
-    for (int r = 0; r < reps; r++) {
-
-        for (int i = 0; i < n; i++)
-            lin_probe_insert(HTable, hash, test_values[i]);
-
-        start = clock();
-        for (int i = 0; i < k; i++)
-            lin_probe_delete(HTable, hash, test_values[i]);
-        end = clock();
-
-        del_success_time += (double)(end - start) / CLOCKS_PER_SEC;
-
-        reset_table(HTable);
-    }
-
-    del_success_time /= (reps * k);
-
-
-    // DELETE провальные
-    double del_fail_time = 0;
-    int *bad_delete = malloc(k*sizeof(int));
-    for (int i=0; i<k; i++) 
-        bad_delete[i] = (double) rand()/RAND_MAX * n + 2*n;
-
-     for (int r = 0; r < reps; r++) {
-
-        for (int i = 0; i < n; i++)
-            lin_probe_insert(HTable, hash, test_values[i]);
-
-        start = clock();
-        for (int i = 0; i < k; i++)
-            lin_probe_delete(HTable, hash, bad_delete[i]);
-        end = clock();
-
-        del_fail_time += (double)(end - start) / CLOCKS_PER_SEC;
-
-        reset_table(HTable);
-    }
-
-    del_fail_time /= (reps * k);
-
-
-
-    // чистим чистим чистим
-    free(HTable);
-    free(test_values);
-    free(to_search);
-    free(bad_delete);
-
-    return (Metrics) {insert_time, search_time, del_success_time, del_fail_time};
-}
-
-
-Metrics test_quad_probe(int (*hash)(int), int n) {
-
-    int reps = 10000;
-
-    OAElem* HTable = malloc(m * sizeof(OAElem));
-    reset_table(HTable);
-
-    int* test_values = malloc(n * sizeof(int));
-    for(int i=0; i<n; i++)
-        test_values[i] = (double) rand()/RAND_MAX * n;
-
-    int k = n / 2;
-
-
-    // INSERT
-    double insert_time = 0;
-    clock_t start, end;
-
-    for (int r=0; r<reps; r++) {
-        start = clock();
-        for (int i=0; i<n; i++) 
-            quad_probe_insert(HTable, hash, test_values[i]);
-        end = clock();
-
-        insert_time += (double)(end - start) / CLOCKS_PER_SEC;
+                switch (op) {
+                    case INSERT:
+                        chained_hash_insert(HTable, hash, value);
+                        i_cnt++;
+                        break;
+                    case SEARCH:
+                        chained_hash_find(HTable, hash, value);
+                        s_cnt++;
+                        break;
+                    case SDELETE: // не факт что value в таблице
+                        chained_hash_delete(HTable, hash, value);
+                        sd_cnt++;
+                        break;
+                    case FDELETE:
+                        value += 10*n;
+                        chained_hash_delete(HTable, hash, value);
+                        fd_cnt++;
+                        break;
         
-        reset_table(HTable);
-    }
-
-    insert_time /= (reps*n);
-
-
-    // SEARCH
-    for (int i=0; i<n; i++) 
-            quad_probe_insert(HTable, hash, test_values[i]);
-
-    int* to_search = malloc(k*sizeof(int));
-    for(int i=0; i<k; i++)
-        to_search[i] = (double) rand()/RAND_MAX * n;
-
-    double search_time = 0;
-    start = clock();
-    for (int r=0; r<reps; r++) {
-        for (int i=0; i<k; i++)
-            quad_probe_search(HTable, hash, to_search[i]);
-    }
-    end = clock();
-
-    search_time = (double)(end - start) / CLOCKS_PER_SEC / (reps * k);
-
-    reset_table(HTable);
-
-
-    // DELETE успешные
-    double del_success_time = 0;
-    for (int r = 0; r < reps; r++) {
-
-        for (int i = 0; i < n; i++)
-            quad_probe_insert(HTable, hash, test_values[i]);
-
-        start = clock();
-        for (int i = 0; i < k; i++)
-            quad_probe_delete(HTable, hash, test_values[i]);
-        end = clock();
-
-        del_success_time += (double)(end - start) / CLOCKS_PER_SEC;
-
-        reset_table(HTable);
-    }
-
-    del_success_time /= (reps * k);
-
-
-    // DELETE провальные
-    double del_fail_time = 0;
-    int *bad_delete = malloc(k*sizeof(int));
-    for (int i=0; i<k; i++) 
-        bad_delete[i] = (double) rand()/RAND_MAX * n + 2*n;
-
-     for (int r = 0; r < reps; r++) {
-
-        for (int i = 0; i < n; i++)
-            quad_probe_insert(HTable, hash, test_values[i]);
-
-        start = clock();
-        for (int i = 0; i < k; i++)
-            quad_probe_delete(HTable, hash, bad_delete[i]);
-        end = clock();
-
-        del_fail_time += (double)(end - start) / CLOCKS_PER_SEC;
-
-        reset_table(HTable);
-    }
-
-    del_fail_time /= (reps * k);
-
-
-
-    // чистим чистим чистим
-    free(HTable);
-    free(test_values);
-    free(to_search);
-    free(bad_delete);
-
-    return (Metrics) {insert_time, search_time, del_success_time, del_fail_time};
-}
-
-
-void lin_quad_test_series(
-    Metrics (*test_func)(int (*hash)(int), int),
-    int (*hash)(int),
-    const char *test_func_name,
-    const char *hash_name
-) {
-    FILE *RESULTS;
-    RESULTS = fopen("results.txt", "a");
-    if (RESULTS) {
-        fprintf(RESULTS, 
-            "Метод разрешения коллизий %s. Хэш-функция %s\n", 
-            test_func_name, 
-            hash_name);
-        fclose(RESULTS);
-    }
-
-    int tests = 10; // количествов тестов
-
-    double alphas[] = {0.5, 0.7, 0.9};
-    int alpahas_count = sizeof(alphas)/sizeof(double);
-
-    for (int ai=0; ai<alpahas_count; ai++) {
-        a = alphas[ai];
-
-        RESULTS = fopen("results.txt", "a");
-        if (RESULTS) {
-            fprintf(RESULTS,
-            "Используемый коэффициент заполнения a = %.2lf\n", 
-            a
-            );
-            fclose(RESULTS);
+                }
+            }
+            end = clock();
+            acc_time = (double)(end - start) / CLOCKS_PER_SEC *1e6;
         }
 
-        for (int n=100; n<=5000; n*=2) {
-            A = 1, B = 1;
-            m = choose_m(n, a);
+        acc_time /= tests;
 
-            RESULTS = fopen("results.txt", "a");
-            if (RESULTS) {
-                fprintf(RESULTS, "Количество элементов в таблице n = %d. ", n);
-                fprintf(RESULTS, "Значение m = %d\n", m);
-                fprintf(RESULTS, "Для поиска и удаления используем k = n/2 = %d прозвольных значений.\n", n/2);
-                if (test_func == test_quad_probe) fprintf(RESULTS, "Используем A = %d, B = %d\n", A, B);
-                fclose(RESULTS);
-            } 
+        printf("RESULTS chaining \thash function %s\ttotal time = %.2lf us\n", hash_name, acc_time);
+        printf("Every operation count\ti: %d, s: %d, sd: %d, fd: %d\nEND TESTS\n\n", i_cnt, s_cnt, sd_cnt, fd_cnt);
+    
 
-            Metrics sum = {0, 0, 0, 0};
+        // сбор таблички
+        for (int i=0; i<m; i++) {
+            clear_list(HTable[i]);
+            free(HTable[i]);
+        }
+        free(HTable);
+    }
+}
 
-            for (int t = 0; t < tests; t++) {
+void uni_lin_test_series(int (*hash)(int), const char *hash_name) {
+    int ops = 100000;
 
-                Metrics metr = test_func(hash, n);
+    int tests = 50;
 
-                sum.insert += metr.insert;
-                sum.search += metr.search;
-                sum.del_success += metr.del_success;
-                sum.del_fail += metr.del_fail;
+    for (int n = 100; n < 55000; n*=2) {
+        double alphas[] = {0.5, 0.7, 0.9};
+        int alpahas_count = sizeof(alphas)/sizeof(double);
+
+        for (int ai=0; ai<alpahas_count; ai++) {
+            a = alphas[ai];
+            m = choose_m(n, a); // a = 3.0
+            printf("INPUT:\t n = %d, m = %d, a = %.2lf\n", n, m, a);
+
+            OAElem* HTable = malloc(m * sizeof(OAElem));
+            reset_table(HTable);
+        
+            int i_cnt = 0, s_cnt = 0, sd_cnt = 0, fd_cnt = 0;
+
+
+            double acc_time = 0.0;
+            for (int t=0; t<tests; t++) {
+
+                clock_t start, end;
+                start = clock();
+                for (int i=0; i< ops; i++) {
+                    int value  = (double) rand()/RAND_MAX * n;
+        
+                    int op = rand() % 4;
+            
+                    switch (op) {
+                        case INSERT:
+                            lin_probe_insert(HTable, hash, value);
+                            i_cnt++;
+                            break;
+                        case SEARCH:
+                            lin_probe_search(HTable, hash, value);
+                            s_cnt++;
+                            break;
+                        case SDELETE: // нихуя не факт что value в таблице
+                            lin_probe_delete(HTable, hash, value);
+                            sd_cnt++;
+                            break;
+                        case FDELETE:
+                            value += 10*n;
+                            lin_probe_delete(HTable, hash, value);
+                            fd_cnt++;
+                            break;
+            
+                    }
+                }
+                end = clock();
+                acc_time = (double)(end - start) / CLOCKS_PER_SEC *1e6;
             }
 
-            Metrics avg = {
-                sum.insert / tests * 1e9,
-                sum.search / tests * 1e9,
-                sum.del_success / tests * 1e9,
-                sum.del_fail / tests * 1e9
-            };
+            acc_time /= tests;
 
-            RESULTS = fopen("results.txt", "a");
-            if (RESULTS) {
-                fprintf(RESULTS,
-                        "Среднее время вставки = %.2lf ns, поиска = %.2lf ns, успешного удаления = %.2lf ns, неудачного удаления = %.2lf ns.\n\n", 
-                        avg.insert, avg.search, avg.del_success, avg.del_fail);
-                fclose(RESULTS);
-            } 
+            printf("RESULTS chaining \thash function %s\ttotal time = %.2lf us\n", hash_name, acc_time);
+            printf("Every operation count\ti: %d, s: %d, sd: %d, fd: %d\nEND TESTS\n\n", i_cnt, s_cnt, sd_cnt, fd_cnt);
+        
+
+            // сбор таблички
+            reset_table(HTable);
+            free(HTable);
+
         }
+        
     }
-
-    RESULTS = fopen("results.txt", "a");
-    if (RESULTS) {
-        fprintf(RESULTS,
-            "..............................Конец теста..................................................... \n\n");
-        fclose(RESULTS);
-    } //  else return 1; чето вернуть если файлик не открылся
 }
 
+void uni_quad_test_series(int (*hash)(int), const char *hash_name) {
+    int ops = 100000;
+
+    int tests = 50;
+
+    for (int n = 100; n < 55000; n*=2) {
+        double alphas[] = {0.5, 0.7, 0.9};
+        int alpahas_count = sizeof(alphas)/sizeof(double);
+
+        for (int ai=0; ai<alpahas_count; ai++) {
+            a = alphas[ai];
+            m = choose_m(n, a); // a = 3.0
+            printf("INPUT:\t n = %d, m = %d, a = %.2lf\n", n, m, a);
+
+            OAElem* HTable = malloc(m * sizeof(OAElem));
+            reset_table(HTable);
+        
+            int i_cnt = 0, s_cnt = 0, sd_cnt = 0, fd_cnt = 0;
+
+
+            double acc_time = 0.0;
+            for (int t=0; t<tests; t++) {
+
+                clock_t start, end;
+                start = clock();
+                for (int i=0; i< ops; i++) {
+                    int value  = (double) rand()/RAND_MAX * n;
+        
+                    int op = rand() % 4;
+            
+                    switch (op) {
+                        case INSERT:
+                            quad_probe_insert(HTable, hash, value);
+                            i_cnt++;
+                            break;
+                        case SEARCH:
+                            quad_probe_search(HTable, hash, value);
+                            s_cnt++;
+                            break;
+                        case SDELETE: // нихуя не факт что value в таблице
+                            quad_probe_delete(HTable, hash, value);
+                            sd_cnt++;
+                            break;
+                        case FDELETE:
+                            value += 10*n;
+                            quad_probe_delete(HTable, hash, value);
+                            fd_cnt++;
+                            break;
+            
+                    }
+                }
+                end = clock();
+                acc_time = (double)(end - start) / CLOCKS_PER_SEC *1e6;
+            }
+
+            acc_time /= tests;
+
+            printf("RESULTS chaining \thash function %s\ttotal time = %.2lf us\n", hash_name, acc_time);
+            printf("Every operation count\ti: %d, s: %d, sd: %d, fd: %d\nEND TESTS\n\n", i_cnt, s_cnt, sd_cnt, fd_cnt);
+        
+
+            // сбор таблички
+            reset_table(HTable);
+            free(HTable);
+
+        }
+        
+    }
+}
 
 // RAND_MAX = 32767
 int main() {
     srand(time(NULL));
 
-    // printf(".........BENCHMARK........\n");
-    // chained_test_series(test_chained_hash, hash_substract,
-    //             "chaining", "modulo");
-
-    // printf(".........BENCHMARK........\n");
-    // chained_test_series(test_chained_hash, hash_multiply,
-    //             "chaining", "multiplication");
-    // 
-
-
-    // printf(".........BENCHMARK........\n");
-    // lin_quad_test_series(test_quad_probe, hash_substract,
-    //             "quadratic probing", "modulo");
-
-    // printf(".........BENCHMARK........\n");
-    // chained_test_series(test_chained_hash, hash_xor,
-    //             "chaining", "xor");
-
-    // printf(".........BENCHMARK........\n");
-    // lin_quad_test_series(test_lin_probe, hash_xor,
-    //             "linear", "xor");
-
-    // printf(".........BENCHMARK........\n");
-    // lin_quad_test_series(test_quad_probe, hash_xor,
-    //             "quad", "xor");
-
-    // printf(".........BENCHMARK........\n");
-    // chained_test_series(test_chained_hash, hash_knuth,
-    //             "chaining", "knuth");
-
-    // printf(".........BENCHMARK........\n");
-    // lin_quad_test_series(test_lin_probe, hash_knuth,
-    //             "linear", "knuth");
-
-    // printf(".........BENCHMARK........\n");
-    // lin_quad_test_series(test_quad_probe, hash_knuth,
-    //             "quad", "knuth");
-
-    // printf(".........BENCHMARK........\n");
-    // lin_quad_test_series(test_lin_probe, hash_multiply,
-    //             "linear", "multiplication");
-
-    // printf(".........BENCHMARK........\n");
-    // lin_quad_test_series(test_quad_probe, hash_multiply,
-    //             "quad", "multiplication");
+    uni_ch_test_series(hash_substract, "modulo");
 
     return 0;
 }
 
+
+// как вариан чтобы не плодить тестовые функции можно сделать функцию с void* на таблицу и потом в функции проверять какого типа, 
+// хотя бля там дальше то фукнци-методы вызвать надо, их тогда тоже по указатялеся хуня короче
 
 
 /* 
@@ -851,10 +548,6 @@ int main() {
 
 В квадратичном пробировании так как не образуются большие кластеры, количество операций сокращается в разы
 */
-
-
-
-
 
 
 
