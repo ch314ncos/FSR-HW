@@ -161,6 +161,7 @@ END TESTS
 
 ------------------------------------------------------------------------ПЛОХАЯ ХЭШ ФУНКЦИЯ----------------------------------------------------------------------------
 ................................ЛИН ПРОБИРОВАНИЕ...............................................
+Sequently
 INPUT:   n = 10000, m = 20011, a = 0.50
 RESULTS lin probing     hash function modulo 2^p        operations time = 264030.00 us
 Time for n = 10000 insert and k = 5000 search, delete   i: 106720.00 us, s: 67510.00 us, d: 89790.00 us.
@@ -210,3 +211,448 @@ INPUT:   n = 22500, m = 32143, a = 0.70
 
 
 
+-----------------------------------------------РАНДОМНО----------------------------------------
+..............ХОРОШАЯ ХЭШ-ФУНКЦИЯ......................
+
+// линейная
+
+Random
+Operations: 50000       tests: 50
+INPUT:   n = 10000, m = 20011, a = 0.50
+RESULTS lin probing     hash function modulo prime      total time = 23280.00 us
+Insert time of 16653 ops        : 5420.00 us
+Search time of 16665 ops        : 6840.00 us
+Delete time of 16680 ops        : 7280.00 us
+Collisions number per insert: 55.63
+END TESTS
+
+INPUT:   n = 10000, m = 14293, a = 0.70
+RESULTS lin probing     hash function modulo prime      total time = 22160.00 us
+Insert time of 16639 ops        : 4460.00 us
+Search time of 16691 ops        : 6960.00 us
+Delete time of 16669 ops        : 8260.00 us
+Collisions number per insert: 55.96
+END TESTS
+
+INPUT:   n = 10000, m = 11113, a = 0.90
+RESULTS lin probing     hash function modulo prime      total time = 23020.00 us
+Insert time of 16675 ops        : 7140.00 us
+Search time of 16628 ops        : 6940.00 us
+Delete time of 16696 ops        : 5980.00 us
+Collisions number per insert: 59.64
+END TESTS
+
+INPUT:   n = 15000, m = 30011, a = 0.50
+RESULTS lin probing     hash function modulo prime      total time = 6480.00 us
+Insert time of 16675 ops        : 880.00 us
+Search time of 16667 ops        : 920.00 us
+Delete time of 16657 ops        : 1200.00 us
+Collisions number per insert: 1.84
+END TESTS
+
+INPUT:   n = 15000, m = 21433, a = 0.70
+RESULTS lin probing     hash function modulo prime      total time = 6500.00 us
+Insert time of 16671 ops        : 1120.00 us
+Search time of 16648 ops        : 860.00 us
+Delete time of 16679 ops        : 1060.00 us
+Collisions number per insert: 1.85
+END TESTS
+
+INPUT:   n = 15000, m = 16673, a = 0.90
+RESULTS lin probing     hash function modulo prime      total time = 6440.00 us
+Insert time of 16661 ops        : 1020.00 us
+Search time of 16655 ops        : 1000.00 us
+Delete time of 16683 ops        : 1240.00 us
+Collisions number per insert: 1.84
+END TESTS
+
+INPUT:   n = 22500, m = 45007, a = 0.50
+RESULTS lin probing     hash function modulo prime      total time = 5640.00 us
+Insert time of 16654 ops        : 920.00 us
+Search time of 16692 ops        : 520.00 us
+Delete time of 16652 ops        : 1020.00 us
+Collisions number per insert: 0.72
+END TESTS
+
+INPUT:   n = 22500, m = 32143, a = 0.70
+RESULTS lin probing     hash function modulo prime      total time = 5860.00 us
+Insert time of 16647 ops        : 880.00 us
+Search time of 16674 ops        : 740.00 us
+Delete time of 16677 ops        : 700.00 us
+Collisions number per insert: 0.73
+END TESTS
+
+INPUT:   n = 22500, m = 25013, a = 0.90
+RESULTS lin probing     hash function modulo prime      total time = 5720.00 us
+Insert time of 16681 ops        : 1040.00 us
+Search time of 16664 ops        : 620.00 us
+Delete time of 16653 ops        : 900.00 us
+Collisions number per insert: 0.72
+END TESTS
+
+INPUT:   n = 33750, m = 67511, a = 0.50
+RESULTS lin probing     hash function modulo prime      total time = 5420.00 us
+Insert time of 16676 ops        : 580.00 us
+Search time of 16660 ops        : 820.00 us
+Delete time of 16662 ops        : 880.00 us
+Collisions number per insert: 0.38
+END TESTS
+
+INPUT:   n = 33750, m = 48221, a = 0.70
+RESULTS lin probing     hash function modulo prime      total time = 5280.00 us
+Insert time of 16689 ops        : 580.00 us
+Search time of 16659 ops        : 560.00 us
+Delete time of 16651 ops        : 500.00 us
+Collisions number per insert: 0.38
+END TESTS
+
+INPUT:   n = 33750, m = 37501, a = 0.90
+RESULTS lin probing     hash function modulo prime      total time = 5220.00 us
+Insert time of 16662 ops        : 560.00 us
+Search time of 16647 ops        : 580.00 us
+Delete time of 16690 ops        : 920.00 us
+Collisions number per insert: 0.38
+END TESTS
+
+
+........................ПЛОХАЯ ХЭШ ФУНКЦИЯ............
+Random
+Operations: 50000       tests: 50
+INPUT:   n = 10000, m = 20011, a = 0.50
+RESULTS lin probing     hash function modulo 2^p        total time = 1030500.00 us
+Insert time of 16659 ops        : 342120.00 us
+Search time of 16678 ops        : 341020.00 us
+Delete time of 16662 ops        : 342520.00 us
+Collisions number per insert: -1031.64
+END TESTS
+
+INPUT:   n = 10000, m = 14293, a = 0.70
+RESULTS lin probing     hash function modulo 2^p        total time = 1001120.00 us
+Insert time of 16676 ops        : 321020.00 us
+Search time of 16665 ops        : 342060.00 us
+Delete time of 16658 ops        : 332880.00 us
+Collisions number per insert: -1022.03
+END TESTS
+
+INPUT:   n = 10000, m = 11113, a = 0.90
+RESULTS lin probing     hash function modulo 2^p        total time = 964200.00 us
+Insert time of 16648 ops        : 307440.00 us
+Search time of 16685 ops        : 324800.00 us
+Delete time of 16665 ops        : 328320.00 us
+Collisions number per insert: -1046.55
+END TESTS
+
+
+Слишком долго + перепелонение инт поэтому отрицательные значения
+
+
+...........Хорошая хэш ФУНКЦИЯ..............
+// ЦЕПОЧКИ
+           
+Operations: 100000      tests: 50
+INPUT:   n = 10000, m = 3343, a = 3.00
+RESULTS chaining        hash function modulo prime      total time = 17900.00 us
+Insert time of 33342 ops        : 4180.00 us
+Search time of 33321 ops        : 2720.00 us
+Delete time of 33335 ops        : 3740.00 us
+Collisions number per insert: 0.84
+END TESTS
+
+INPUT:   n = 15000, m = 5003, a = 3.00
+RESULTS chaining        hash function modulo prime      total time = 16180.00 us
+Insert time of 33349 ops        : 3060.00 us
+Search time of 33295 ops        : 2580.00 us
+Delete time of 33354 ops        : 4200.00 us
+Collisions number per insert: 0.78
+END TESTS
+
+INPUT:   n = 22500, m = 7507, a = 3.00
+RESULTS chaining        hash function modulo prime      total time = 17420.00 us
+Insert time of 33321 ops        : 3240.00 us
+Search time of 33337 ops        : 3880.00 us
+Delete time of 33341 ops        : 3700.00 us
+Collisions number per insert: 0.70
+END TESTS
+
+INPUT:   n = 33750, m = 11251, a = 3.00
+RESULTS chaining        hash function modulo prime      total time = 16960.00 us
+Insert time of 33312 ops        : 3600.00 us
+Search time of 33359 ops        : 2480.00 us
+Delete time of 33328 ops        : 3320.00 us
+Collisions number per insert: 0.61
+END TESTS
+
+
+.............Плохая............
+Random
+Operations: 100000      tests: 50
+INPUT:   n = 10000, m = 3343, a = 3.00
+RESULTS chaining        hash function modulo 2^p        total time = 31160.00 us
+Insert time of 33320 ops        : 3440.00 us
+Search time of 33317 ops        : 9700.00 us
+Delete time of 33361 ops        : 10260.00 us
+Collisions number per insert: 0.99
+END TESTS
+
+INPUT:   n = 15000, m = 5003, a = 3.00
+RESULTS chaining        hash function modulo 2^p        total time = 36740.00 us
+Insert time of 33329 ops        : 3660.00 us
+Search time of 33339 ops        : 12920.00 us
+Delete time of 33330 ops        : 13320.00 us
+Collisions number per insert: 0.99
+END TESTS
+
+INPUT:   n = 22500, m = 7507, a = 3.00
+RESULTS chaining        hash function modulo 2^p        total time = 47460.00 us
+Insert time of 33350 ops        : 4020.00 us
+Search time of 33302 ops        : 17180.00 us
+Delete time of 33347 ops        : 17700.00 us
+Collisions number per insert: 0.99
+END TESTS
+
+INPUT:   n = 33750, m = 11251, a = 3.00
+RESULTS chaining        hash function modulo 2^p        total time = 52500.00 us
+Insert time of 33339 ops        : 5880.00 us
+Search time of 33346 ops        : 19480.00 us
+Delete time of 33314 ops        : 19880.00 us
+Collisions number per insert: 0.99
+END TESTS
+
+
+------------------------------------------------------------- Оптимизация Кнута ----------------------------------
+..............ЛИнейная...............
+// РАНДОМНО
+Random
+Operations: 50000       tests: 50
+INPUT:   n = 10000, m = 20011, a = 0.50
+RESULTS lin probing     hash function knuth     total time = 5980.00 us
+Insert time of 16651 ops        : 300.00 us
+Search time of 16677 ops        : 60.00 us
+Delete time of 16671 ops        : 1260.00 us
+Collisions number per insert: 1.19
+END TESTS
+
+INPUT:   n = 10000, m = 14293, a = 0.70
+RESULTS lin probing     hash function knuth     total time = 8020.00 us
+Insert time of 16670 ops        : 1220.00 us
+Search time of 16665 ops        : 440.00 us
+Delete time of 16664 ops        : 1840.00 us
+Collisions number per insert: 4.95
+END TESTS
+
+INPUT:   n = 10000, m = 11113, a = 0.90
+RESULTS lin probing     hash function knuth     total time = 67260.00 us
+Insert time of 16634 ops        : 21700.00 us
+Search time of 16695 ops        : 20400.00 us
+Delete time of 16669 ops        : 21700.00 us
+Collisions number per insert: 255.66
+END TESTS
+
+INPUT:   n = 15000, m = 30011, a = 0.50
+RESULTS lin probing     hash function knuth     total time = 6420.00 us
+Insert time of 16660 ops        : 1180.00 us
+Search time of 16654 ops        : 240.00 us
+Delete time of 16684 ops        : 1760.00 us
+Collisions number per insert: 0.66
+END TESTS
+
+INPUT:   n = 15000, m = 21433, a = 0.70
+RESULTS lin probing     hash function knuth     total time = 6880.00 us
+Insert time of 16656 ops        : 1440.00 us
+Search time of 16671 ops        : 740.00 us
+Delete time of 16671 ops        : 1740.00 us
+Collisions number per insert: 1.22
+END TESTS
+
+INPUT:   n = 15000, m = 16673, a = 0.90
+RESULTS lin probing     hash function knuth     total time = 7060.00 us
+Insert time of 16657 ops        : 1060.00 us
+Search time of 16672 ops        : 880.00 us
+Delete time of 16669 ops        : 1240.00 us
+Collisions number per insert: 2.10
+END TESTS
+
+INPUT:   n = 22500, m = 45007, a = 0.50
+RESULTS lin probing     hash function knuth     total time = 6240.00 us
+Insert time of 16696 ops        : 1020.00 us
+Search time of 16651 ops        : 740.00 us
+Delete time of 16652 ops        : 920.00 us
+Collisions number per insert: 0.52
+END TESTS
+
+INPUT:   n = 22500, m = 32143, a = 0.70
+RESULTS lin probing     hash function knuth     total time = 6200.00 us
+Insert time of 16646 ops        : 620.00 us
+Search time of 16677 ops        : 660.00 us
+Delete time of 16675 ops        : 1080.00 us
+Collisions number per insert: 0.70
+END TESTS
+
+INPUT:   n = 22500, m = 25013, a = 0.90
+RESULTS lin probing     hash function knuth     total time = 7260.00 us
+Insert time of 16676 ops        : 1080.00 us
+Search time of 16637 ops        : 1180.00 us
+Delete time of 16685 ops        : 1080.00 us
+Collisions number per insert: 0.88
+END TESTS
+
+INPUT:   n = 33750, m = 67511, a = 0.50
+RESULTS lin probing     hash function knuth     total time = 6040.00 us
+Insert time of 16662 ops        : 860.00 us
+Search time of 16665 ops        : 560.00 us
+Delete time of 16671 ops        : 820.00 us
+Collisions number per insert: 0.28
+END TESTS
+
+INPUT:   n = 33750, m = 48221, a = 0.70
+RESULTS lin probing     hash function knuth     total time = 7440.00 us
+Insert time of 16656 ops        : 1120.00 us
+Search time of 16691 ops        : 1040.00 us
+Delete time of 16651 ops        : 960.00 us
+Collisions number per insert: 0.31
+END TESTS
+
+INPUT:   n = 33750, m = 37501, a = 0.90
+RESULTS lin probing     hash function knuth     total time = 6320.00 us
+Insert time of 16682 ops        : 520.00 us
+Search time of 16655 ops        : 700.00 us
+Delete time of 16662 ops        : 640.00 us
+Collisions number per insert: 0.52
+END TESTS
+
+
+// ПОСЛЕДОВАТЕЛЬНО
+Sequently testing.
+INPUT:   n = 10000, m = 20011, a = 0.50
+RESULTS lin probing     hash function knuth     operations time = 1640.00 us
+Time for n = 10000 insert and k = 5000 search, delete   i: 680.00 us, s: 330.00 us, d: 550.00 us.
+Collisions number per insert: 1086
+END TESTS
+
+INPUT:   n = 10000, m = 14293, a = 0.70
+RESULTS lin probing     hash function knuth     operations time = 2550.00 us
+Time for n = 10000 insert and k = 5000 search, delete   i: 1270.00 us, s: 420.00 us, d: 830.00 us.
+Collisions number per insert: 1092
+END TESTS
+
+INPUT:   n = 10000, m = 11113, a = 0.90
+RESULTS lin probing     hash function knuth     operations time = 47360.00 us
+Time for n = 10000 insert and k = 5000 search, delete   i: 16670.00 us, s: 12890.00 us, d: 17800.00 us.
+Collisions number per insert: 1418
+END TESTS
+
+INPUT:   n = 15000, m = 30011, a = 0.50
+RESULTS lin probing     hash function knuth     operations time = 2520.00 us
+Time for n = 15000 insert and k = 7500 search, delete   i: 1160.00 us, s: 530.00 us, d: 610.00 us.
+Collisions number per insert: 946
+END TESTS
+
+INPUT:   n = 15000, m = 21433, a = 0.70
+RESULTS lin probing     hash function knuth     operations time = 3180.00 us
+Time for n = 15000 insert and k = 7500 search, delete   i: 1260.00 us, s: 730.00 us, d: 1050.00 us.
+Collisions number per insert: 949
+END TESTS
+
+INPUT:   n = 15000, m = 16673, a = 0.90
+RESULTS lin probing     hash function knuth     operations time = 4810.00 us
+Time for n = 15000 insert and k = 7500 search, delete   i: 1600.00 us, s: 1240.00 us, d: 1900.00 us.
+Collisions number per insert: 955
+END TESTS
+
+INPUT:   n = 22500, m = 45007, a = 0.50
+RESULTS lin probing     hash function knuth     operations time = 4080.00 us
+Time for n = 22500 insert and k = 11250 search, delete  i: 1960.00 us, s: 890.00 us, d: 1000.00 us.
+Collisions number per insert: 638
+END TESTS
+
+INPUT:   n = 22500, m = 32143, a = 0.70
+RESULTS lin probing     hash function knuth     operations time = 4630.00 us
+Time for n = 22500 insert and k = 11250 search, delete  i: 2130.00 us, s: 1040.00 us, d: 1310.00 us.
+Collisions number per insert: 640
+END TESTS
+
+INPUT:   n = 22500, m = 25013, a = 0.90
+RESULTS lin probing     hash function knuth     operations time = 7370.00 us
+Time for n = 22500 insert and k = 11250 search, delete  i: 2560.00 us, s: 1730.00 us, d: 3020.00 us.
+Collisions number per insert: 645
+END TESTS
+
+INPUT:   n = 33750, m = 67511, a = 0.50
+RESULTS lin probing     hash function knuth     operations time = 5710.00 us
+Time for n = 33750 insert and k = 16875 search, delete  i: 3120.00 us, s: 1380.00 us, d: 890.00 us.
+Collisions number per insert: 431
+END TESTS
+
+INPUT:   n = 33750, m = 48221, a = 0.70
+RESULTS lin probing     hash function knuth     operations time = 6160.00 us
+Time for n = 33750 insert and k = 16875 search, delete  i: 2750.00 us, s: 1410.00 us, d: 1830.00 us.
+Collisions number per insert: 433
+END TESTS
+
+INPUT:   n = 33750, m = 37501, a = 0.90
+RESULTS lin probing     hash function knuth     operations time = 11120.00 us
+Time for n = 33750 insert and k = 16875 search, delete  i: 3860.00 us, s: 2950.00 us, d: 4260.00 us.
+Collisions number per insert: 438
+END TESTS
+
+
+
+..........................ЦЕПОЧКИ..................
+Random
+Operations: 100000      tests: 50
+INPUT:   n = 10000, m = 3343, a = 3.00
+RESULTS chaining        hash function knuth     total time = 17160.00 us
+Insert time of 33339 ops        : 3580.00 us
+Search time of 33326 ops        : 2760.00 us
+Delete time of 33334 ops        : 3800.00 us
+Collisions number per insert: 0.84
+END TESTS
+
+INPUT:   n = 15000, m = 5003, a = 3.00
+RESULTS chaining        hash function knuth     total time = 17220.00 us
+Insert time of 33300 ops        : 3700.00 us
+Search time of 33337 ops        : 2360.00 us
+Delete time of 33361 ops        : 4480.00 us
+Collisions number per insert: 0.78
+END TESTS
+
+INPUT:   n = 22500, m = 7507, a = 3.00
+RESULTS chaining        hash function knuth     total time = 17340.00 us
+Insert time of 33349 ops        : 3520.00 us
+Search time of 33323 ops        : 3000.00 us
+Delete time of 33326 ops        : 2840.00 us
+Collisions number per insert: 0.71
+END TESTS
+
+INPUT:   n = 33750, m = 11251, a = 3.00
+RESULTS chaining        hash function knuth     total time = 18640.00 us
+Insert time of 33358 ops        : 4560.00 us
+Search time of 33289 ops        : 2740.00 us
+Delete time of 33351 ops        : 3620.00 us
+Collisions number per insert: 0.63
+END TESTS
+
+Sequently testing.
+INPUT:   n = 10000, m = 3343, a = 3.00
+RESULTS chaining        hash function knuth     operations time = 2479.10 us
+Time for n = 10000 insert and k = 5000 search, delete   i: 1000.00 us, s: 538.70 us, d: 623.70 us.
+Max chain length: 11
+END TESTS
+
+INPUT:   n = 15000, m = 5003, a = 3.00
+RESULTS chaining        hash function knuth     operations time = 4296.50 us
+Time for n = 15000 insert and k = 7500 search, delete   i: 1676.50 us, s: 978.20 us, d: 1086.10 us.
+Max chain length: 12
+END TESTS
+
+INPUT:   n = 22500, m = 7507, a = 3.00
+RESULTS chaining        hash function knuth     operations time = 6635.50 us
+Time for n = 22500 insert and k = 11250 search, delete  i: 2454.60 us, s: 1581.30 us, d: 1783.30 us.
+Max chain length: 15
+END TESTS
+
+INPUT:   n = 33750, m = 11251, a = 3.00
+RESULTS chaining        hash function knuth     operations time = 10387.80 us
+Time for n = 33750 insert and k = 16875 search, delete  i: 3754.40 us, s: 2509.60 us, d: 2819.80 us.
+Max chain length: 13
+END TESTS

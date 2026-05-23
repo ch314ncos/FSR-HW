@@ -19,26 +19,25 @@ int hash_bad(int value) {
     return value % 256;
 }
 
-// остальные хэш-функции
-/*
-    int hash_multiply(int value) {
-        int w = 32; // 32 бит
-        double A = (pow(5, 0.5) - 1)/2; // 0,6180339887
 
-        return (int)(m*(value*A - (int)(value*A)));
-    } 
+int hash_multiply(int value) {
+    int w = 32; // 32 бит
+    double A = (pow(5, 0.5) - 1)/2; // 0,6180339887
 
-    int hash_xor(int value) {
-        value ^= (value >> 16);
-        value ^= (value << 10);
-        value ^= (value >> 5);
-        return value % m;
-    }
+    return (int)(m*(value*A - (int)(value*A)));
+} 
 
-    int hash_knuth(int value) {
-        return (value * 2654435761u) % m;
-    }
-*/
+int hash_xor(int value) {
+    value ^= (value >> 16);
+    value ^= (value << 10);
+    value ^= (value >> 5);
+    return value % m;
+}
+
+int hash_knuth(int value) {
+    return (value * 2654435761u) % m;
+}
+
 
 
 
@@ -332,7 +331,7 @@ enum Operation {
 };
 
 void random_lin_probe_test_series(int (*hash)(int), const char *hash_name) {
-    int ops = 100000;
+    int ops = 50000;
 
     int tests = 50;
 
@@ -363,7 +362,7 @@ void random_lin_probe_test_series(int (*hash)(int), const char *hash_name) {
             for (int t=0; t<tests; t++) {
                 reset_table(HTable);
 
-                i_cnt = 0, s_cnt = 0, d_cnt = 0; 
+                // i_cnt = 0, s_cnt = 0, d_cnt = 0; 
     
                 clock_t start, end;
                 clock_t os, oe; //operation start / end
@@ -425,7 +424,7 @@ void random_lin_probe_test_series(int (*hash)(int), const char *hash_name) {
 }
 
 void random_quad_probe_test_series(int (*hash)(int), const char *hash_name) {
-    int ops = 1000;
+    int ops = 50000;
 
     int tests = 50;
     A = 1, B = 1;
@@ -519,7 +518,8 @@ void random_ch_test_series(int (*hash)(int), const char *hash_name) {
     int ops = 100000;
 
     int tests = 50;
-    
+
+    printf("Random\n");
     printf("Operations: %d\ttests: %d\n", ops, tests);
 
     for (int n = 10000; n < 50000; n = (int)(n*1.5)) {
@@ -540,7 +540,7 @@ void random_ch_test_series(int (*hash)(int), const char *hash_name) {
         int total_collisions = 0;
 
         for (int t=0; t<tests; t++) {
-            i_cnt = 0, s_cnt = 0, d_cnt = 0; 
+            // i_cnt = 0, s_cnt = 0, d_cnt = 0; 
 
             clock_t start, end;
             clock_t os, oe; //operation start / end
@@ -617,7 +617,7 @@ void seq_ch_test_series(int (*hash)(int), const char *hash_name){
 
    
     for (int n = 10000; n < 50000; n = (int)(n * 1.5)) {
-        a = 5.0;
+        // a = 5.0;
         m = choose_m(n, a); // a = 3.0
         printf("INPUT:\t n = %d, m = %d, a = %.2lf\n", n, m, a);
 
@@ -892,9 +892,17 @@ int main() {
     srand(time(NULL));
 
     // seq_lin_test_series(hash_bad, "modulo 2^p");
-    // random_ch_test_series(hash_substract, "modulo prime");
+    // random_ch_test_series(hash_bad, "modulo 2^p");
 
-    random_lin_probe_test_series(hash_substract, "modulo prime");
+    random_lin_probe_test_series(hash_substract, "modulo");
+    random_lin_probe_test_series(hash_bad, "modulo 2^p");
+
+    // random_lin_probe_test_series(hash_knuth, "knuth");
+    // seq_lin_test_series(hash_knuth, "knuth");
+
+    
+    // random_ch_test_series(hash_knuth, "knuth");
+    // seq_ch_test_series(hash_knuth, "knuth");
 
     return 0;
 }
