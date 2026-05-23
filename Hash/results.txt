@@ -1,49 +1,212 @@
-INPUT:   n = 100, m = 37, a = 3.00
-RESULTS chaining        hash function modulo    total time = 960.00 us
-Every operation count   i: 1250079, s: 1249998, sd: 1249946, fd: 1249977
+---------------------------------------------------------------------------------ХОРОШАЯ ХЭШ ФУНКЦИЯ------------------------------------------------------------------
+................................ЦЕПОЧКИ...............................................
+
+Sequently testing.
+INPUT:   n = 10000, m = 2003, a = 5.00
+RESULTS chaining        hash function modulo    operations time = 1082.50 us
+Time for n = 10000 insert and k = 5000 search, delete   i: 438.10 us, s: 251.20 us, d: 272.70 us.
+Max chain length: 14
 END TESTS
 
-INPUT:   n = 200, m = 67, a = 3.00
-RESULTS chaining        hash function modulo    total time = 920.00 us
-Every operation count   i: 1250041, s: 1249980, sd: 1250034, fd: 1249945
+INPUT:   n = 15000, m = 3001, a = 5.00
+RESULTS chaining        hash function modulo    operations time = 1711.10 us
+Time for n = 15000 insert and k = 7500 search, delete   i: 618.20 us, s: 427.10 us, d: 476.00 us.
+Max chain length: 14
 END TESTS
 
-INPUT:   n = 400, m = 137, a = 3.00
-RESULTS chaining        hash function modulo    total time = 900.00 us
-Every operation count   i: 1249987, s: 1250116, sd: 1249938, fd: 1249959
+INPUT:   n = 22500, m = 4507, a = 5.00
+RESULTS chaining        hash function modulo    operations time = 2796.50 us
+Time for n = 22500 insert and k = 11250 search, delete  i: 981.60 us, s: 713.40 us, d: 788.00 us.
+Max chain length: 15
 END TESTS
 
-INPUT:   n = 800, m = 269, a = 3.00
-RESULTS chaining        hash function modulo    total time = 840.00 us
-Every operation count   i: 1249920, s: 1250043, sd: 1250029, fd: 1250008
+INPUT:   n = 33750, m = 6761, a = 5.00
+RESULTS chaining        hash function modulo    operations time = 4553.60 us
+Time for n = 33750 insert and k = 16875 search, delete  i: 1552.50 us, s: 1206.20 us, d: 1281.70 us.
+Max chain length: 14
 END TESTS
 
-INPUT:   n = 1600, m = 541, a = 3.00
-RESULTS chaining        hash function modulo    total time = 700.00 us
-Every operation count   i: 1249992, s: 1249922, sd: 1250148, fd: 1249938
+INPUT:   n = 50625, m = 10133, a = 5.00
+PS C:\VSCode\ProjectsC\FSR-HW\Hash> gcc main.c -o temp.exe
+PS C:\VSCode\ProjectsC\FSR-HW\Hash> ./temp.exe
+Sequently testing.
+INPUT:   n = 10000, m = 2003, a = 5.00
+RESULTS chaining        hash function modulo    operations time = 1105.50 us
+Time for n = 10000 insert and k = 5000 search, delete   i: 426.00 us, s: 284.40 us, d: 274.70 us.
+Max chain length: 14
 END TESTS
 
-INPUT:   n = 3200, m = 1069, a = 3.00
-RESULTS chaining        hash function modulo    total time = 600.00 us
-Every operation count   i: 1250003, s: 1249930, sd: 1249959, fd: 1250108
+INPUT:   n = 15000, m = 3001, a = 5.00
+RESULTS chaining        hash function modulo    operations time = 1775.10 us
+Time for n = 15000 insert and k = 7500 search, delete   i: 654.90 us, s: 450.10 us, d: 465.90 us.
+Max chain length: 16
 END TESTS
 
-INPUT:   n = 6400, m = 2137, a = 3.00
-RESULTS chaining        hash function modulo    total time = 540.00 us
-Every operation count   i: 1249948, s: 1250036, sd: 1249969, fd: 1250047
+INPUT:   n = 22500, m = 4507, a = 5.00
+RESULTS chaining        hash function modulo    operations time = 2924.60 us
+Time for n = 22500 insert and k = 11250 search, delete  i: 1004.10 us, s: 771.40 us, d: 841.60 us.
+Max chain length: 14
 END TESTS
 
-INPUT:   n = 12800, m = 4271, a = 3.00
-RESULTS chaining        hash function modulo    total time = 440.00 us
-Every operation count   i: 1250156, s: 1249956, sd: 1249945, fd: 1249943
+INPUT:   n = 33750, m = 6761, a = 5.00
+RESULTS chaining        hash function modulo    operations time = 4784.70 us
+Time for n = 33750 insert and k = 16875 search, delete  i: 1544.60 us, s: 1315.50 us, d: 1399.40 us.
+Max chain length: 14
 END TESTS
 
-INPUT:   n = 25600, m = 8537, a = 3.00
-RESULTS chaining        hash function modulo    total time = 420.00 us
-Every operation count   i: 1250045, s: 1250014, sd: 1249978, fd: 1249963
+-----------------------------------------------------------------------------------ПЛОХАЯ ХЭШ ФУНКЦИЯ-------------------------------------------------------------
+................................ЦЕПОЧКИ...............................................
+Sequently testing.
+INPUT:   n = 10000, m = 2003, a = 5.00
+RESULTS chaining        hash function modulo 2^p        operations time = 1994.70 us
+Time for n = 10000 insert and k = 5000 search, delete   i: 433.40 us, s: 731.90 us, d: 727.00 us.
+Max chain length: 64
 END TESTS
 
-INPUT:   n = 51200, m = 17077, a = 3.00
-RESULTS chaining        hash function modulo    total time = 320.00 us
-Every operation count   i: 1249948, s: 1250088, sd: 1249968, fd: 1249996
+INPUT:   n = 15000, m = 3001, a = 5.00
+RESULTS chaining        hash function modulo 2^p        operations time = 4444.50 us
+Time for n = 15000 insert and k = 7500 search, delete   i: 594.50 us, s: 1856.20 us, d: 1824.10 us.
+Max chain length: 78
 END TESTS
+
+INPUT:   n = 22500, m = 4507, a = 5.00
+RESULTS chaining        hash function modulo 2^p        operations time = 10950.60 us
+Time for n = 22500 insert and k = 11250 search, delete  i: 873.50 us, s: 4940.80 us, d: 4849.70 us.
+Max chain length: 111
+END TESTS
+
+INPUT:   n = 33750, m = 6761, a = 5.00
+RESULTS chaining        hash function modulo 2^p        operations time = 28566.80 us
+Time for n = 33750 insert and k = 16875 search, delete  i: 1362.90 us, s: 13654.80 us, d: 13083.30 us.
+Max chain length: 157
+END TESTS
+
+
+
+
+----------------------------------------------------------------------------------ХОРОШАЯ ФУНКЦИЯ-------------------------------------------------------------------
+................................ЛИН ПРОБИРОВАНИЕ...............................................
+Sequently testing.
+INPUT:   n = 10000, m = 20011, a = 0.50
+RESULTS lin probing        hash function modulo prime      operations time = 27950.00 us
+Time for n = 10000 insert and k = 5000 search, delete   i: 1380.00 us, s: 10800.00 us, d: 15750.00 us.
+Collisions number per insert: 49
+END TESTS
+
+INPUT:   n = 10000, m = 14293, a = 0.70
+RESULTS lin probing        hash function modulo prime      operations time = 24920.00 us
+Time for n = 10000 insert and k = 5000 search, delete   i: 1000.00 us, s: 9660.00 us, d: 14250.00 us.
+Collisions number per insert: 92
+END TESTS
+
+INPUT:   n = 10000, m = 11113, a = 0.90
+RESULTS lin probing        hash function modulo prime      operations time = 24070.00 us
+Time for n = 10000 insert and k = 5000 search, delete   i: 1250.00 us, s: 9500.00 us, d: 13320.00 us.
+Collisions number per insert: 135
+END TESTS
+
+INPUT:   n = 15000, m = 30011, a = 0.50
+RESULTS lin probing        hash function modulo prime      operations time = 59060.00 us
+Time for n = 15000 insert and k = 7500 search, delete   i: 2440.00 us, s: 22040.00 us, d: 34490.00 us.
+Collisions number per insert: 150
+END TESTS
+
+INPUT:   n = 15000, m = 21433, a = 0.70
+RESULTS lin probing        hash function modulo prime      operations time = 59850.00 us
+Time for n = 15000 insert and k = 7500 search, delete   i: 2470.00 us, s: 22540.00 us, d: 34800.00 us.
+Collisions number per insert: 205
+END TESTS
+
+INPUT:   n = 15000, m = 16673, a = 0.90
+RESULTS lin probing        hash function modulo prime      operations time = 59880.00 us
+Time for n = 15000 insert and k = 7500 search, delete   i: 2580.00 us, s: 22550.00 us, d: 34710.00 us.
+Collisions number per insert: 262
+END TESTS
+
+INPUT:   n = 22500, m = 45007, a = 0.50
+RESULTS lin probing        hash function modulo prime      operations time = 147450.00 us
+Time for n = 22500 insert and k = 11250 search, delete  i: 4280.00 us, s: 53460.00 us, d: 89620.00 us.
+Collisions number per insert: 248
+END TESTS
+
+INPUT:   n = 22500, m = 32143, a = 0.70
+RESULTS lin probing        hash function modulo prime      operations time = 130080.00 us
+Time for n = 22500 insert and k = 11250 search, delete  i: 3870.00 us, s: 47280.00 us, d: 78900.00 us.
+Collisions number per insert: 317
+END TESTS
+
+INPUT:   n = 22500, m = 25013, a = 0.90
+RESULTS lin probing        hash function modulo prime      operations time = 122910.00 us
+Time for n = 22500 insert and k = 11250 search, delete  i: 4420.00 us, s: 44330.00 us, d: 74140.00 us.
+Collisions number per insert: 384
+END TESTS
+
+INPUT:   n = 33750, m = 67511, a = 0.50
+RESULTS lin probing        hash function modulo prime      operations time = 320010.00 us
+Time for n = 33750 insert and k = 16875 search, delete  i: 7310.00 us, s: 112900.00 us, d: 199740.00 us.
+Collisions number per insert: 344
+END TESTS
+
+INPUT:   n = 33750, m = 48221, a = 0.70
+RESULTS lin probing        hash function modulo prime      operations time = 309690.00 us
+Time for n = 33750 insert and k = 16875 search, delete  i: 7370.00 us, s: 109560.00 us, d: 192660.00 us.
+Collisions number per insert: 429
+END TESTS
+
+INPUT:   n = 33750, m = 37501, a = 0.90
+RESULTS lin probing       hash function modulo prime      operations time = 315450.00 us
+Time for n = 33750 insert and k = 16875 search, delete  i: 7270.00 us, s: 111100.00 us, d: 197060.00 us.
+Collisions number per insert: 514
+END TESTS
+
+------------------------------------------------------------------------ПЛОХАЯ ХЭШ ФУНКЦИЯ----------------------------------------------------------------------------
+................................ЛИН ПРОБИРОВАНИЕ...............................................
+INPUT:   n = 10000, m = 20011, a = 0.50
+RESULTS lin probing     hash function modulo 2^p        operations time = 264030.00 us
+Time for n = 10000 insert and k = 5000 search, delete   i: 106720.00 us, s: 67510.00 us, d: 89790.00 us.
+Collisions number per insert: 577
+END TESTS
+
+INPUT:   n = 10000, m = 14293, a = 0.70
+RESULTS lin probing     hash function modulo 2^p        operations time = 269170.00 us
+Time for n = 10000 insert and k = 5000 search, delete   i: 108660.00 us, s: 69180.00 us, d: 91330.00 us.
+Collisions number per insert: 1154
+END TESTS
+
+INPUT:   n = 10000, m = 11113, a = 0.90
+RESULTS lin probing     hash function modulo 2^p        operations time = 271210.00 us
+Time for n = 10000 insert and k = 5000 search, delete   i: 109850.00 us, s: 70200.00 us, d: 91160.00 us.
+Collisions number per insert: 1731
+END TESTS
+
+INPUT:   n = 15000, m = 30011, a = 0.50
+RESULTS lin probing     hash function modulo 2^p        operations time = 617540.00 us
+Time for n = 15000 insert and k = 7500 search, delete   i: 244520.00 us, s: 154150.00 us, d: 218830.00 us.
+Collisions number per insert: -62
+END TESTS
+
+INPUT:   n = 15000, m = 21433, a = 0.70
+RESULTS lin probing     hash function modulo 2^p        operations time = 618380.00 us
+Time for n = 15000 insert and k = 7500 search, delete   i: 246330.00 us, s: 154270.00 us, d: 217750.00 us.
+Collisions number per insert: -1280
+END TESTS
+
+INPUT:   n = 15000, m = 16673, a = 0.90
+RESULTS lin probing     hash function modulo 2^p        operations time = 622030.00 us
+Time for n = 15000 insert and k = 7500 search, delete   i: 246400.00 us, s: 155570.00 us, d: 220040.00 us.
+Collisions number per insert: 365
+END TESTS
+
+INPUT:   n = 22500, m = 45007, a = 0.50
+RESULTS lin probing     hash function modulo 2^p        operations time = 1424350.00 us
+Time for n = 22500 insert and k = 11250 search, delete  i: 555410.00 us, s: 341310.00 us, d: 527540.00 us.
+Collisions number per insert: -87
+END TESTS
+
+INPUT:   n = 22500, m = 32143, a = 0.70
+// слишклм долго слишком много коллизий
+
+
+
+
+
